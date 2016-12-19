@@ -1,27 +1,31 @@
 package com.sapience.ace.thradpool;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+public class ThreadPoolTest {
 
-public class ThreadPoolTest
-{
+	public static void main(String[] args) {
+		Runnable runnable = new Runnable() {
 
-	public static void main(String[] args)
-	{
-		BlockingQueue<Runnable>  queue=new ArrayBlockingQueue<>(10);
-		ThreadPoolExecutor executor=new ThreadPoolExecutor(1, 1, 10000, TimeUnit.SECONDS, queue);
-		new Runnable()
-		{
-			
 			@Override
-			public void run()
-			{
-				
-				
+			public void run() {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("Runnable task executed");
+
 			}
 		};
-		
+		ThreadPool threadPool=new ThreadPool(3, 13);
+		try {
+			for(int i=0;i<15;i++)
+			{
+				threadPool.execute(new Thread(runnable));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
